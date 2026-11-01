@@ -1,0 +1,20 @@
+# secrets never live in this repo
+.env
+.env.*
+*.pem
+*.key
+.dev.vars
+
+# build output and installers (installers go to GitHub Releases, not git)
+dist/
+build/
+*.exe
+*.msi
+*.zip
+
+# tooling
+node_modules/
+.wrangler/
+__pycache__/
+.DS_Store
+Thumbs.db
