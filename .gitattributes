@@ -1,0 +1,9 @@
+# text files get normal line-ending handling; these are binary and must never
+# be converted (a PDF with its line endings rewritten no longer opens)
+* text=auto
+*.pdf binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.ico binary
+*.exe binary
