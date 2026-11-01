@@ -1,0 +1,23 @@
+name = "likho-credits"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "likho-credits"
+database_id = "REPLACE_AFTER_wrangler_d1_create"
+migrations_dir = "migrations"
+
+[vars]
+# OAuth client ID of the Likho desktop app (Google Cloud console, "Desktop app")
+GOOGLE_CLIENT_ID = "REPLACE.apps.googleusercontent.com"
+# the public half of the voucher key (printed by `npm run keygen`)
+VOUCHER_PUBLIC_KEY = "REPLACE"
+FREE_PAGES = "10"
+PRICE_PAISE_PER_PAGE = "200"
+
+# Secrets — set with `npx wrangler secret put <NAME>`, never written here:
+#   VOUCHER_PRIVATE_KEY      (printed by `npm run keygen`)
+#   RAZORPAY_KEY_ID
+#   RAZORPAY_KEY_SECRET
+#   RAZORPAY_WEBHOOK_SECRET

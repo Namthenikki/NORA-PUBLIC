@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Likho — your handwriting, typed</title>
+<meta name="description" content="Type your text and Likho writes it in your own handwriting, on your own laptop. Learning your hand is free, the first 10 pages are free, then ₹2 a page.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* A sheet of ruled notebook paper. Every line of text sits on a rule:
+     all vertical sizes are whole multiples of the rule pitch. */
+  :root {
+    --paper: #f6f7f4;      /* cool notebook white */
+    --rule: #c8d1db;       /* feint blue-grey ruling */
+    --margin: #e48896;     /* pink double margin */
+    --ink: #3d3a86;        /* indigo ballpoint */
+    --graphite: #24262b;
+    --muted: #5b6170;
+    --pitch: 32px;
+    --margin-x: clamp(28px, 9vw, 104px);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    color: var(--graphite);
+    background-color: var(--paper);
+    background-image: repeating-linear-gradient(to bottom,
+      transparent 0, transparent calc(var(--pitch) - 1px),
+      var(--rule) calc(var(--pitch) - 1px), var(--rule) var(--pitch));
+    font: 400 18px/var(--pitch) "Instrument Sans", system-ui, sans-serif;
+  }
+  body::before {                     /* the double margin line */
+    content: "";
+    position: fixed;
+    top: 0; bottom: 0;
+    left: var(--margin-x);
+    width: 5px;
+    border-left: 1px solid var(--margin);
+    border-right: 1px solid var(--margin);
+    pointer-events: none;
+  }
+  main, footer {
+    margin-left: calc(var(--margin-x) + 28px);
+    margin-right: 20px;
+    max-width: 700px;
+  }
+  /* text baselines land just above each rule */
+  p, li, dt, dd, figcaption, .note { position: relative; top: -6px; }
+  h1, h2 { position: relative; top: -7px; }
+
+  header.hero { padding-top: calc(var(--pitch) * 3); }
+  h1 {
+    margin: 0 0 var(--pitch);
+    font-size: 46px;
+    line-height: calc(var(--pitch) * 2);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    max-width: 15em;
+  }
+  h2 {
+    margin: calc(var(--pitch) * 2) 0 var(--pitch);
+    font-size: 26px;
+    line-height: var(--pitch);
+    font-weight: 600;
+  }
+  p { margin: 0 0 var(--pitch); max-width: 36em; }
+  .lede { font-size: 20px; }
+  a { color: var(--ink); text-underline-offset: 3px; }
+  a:focus-visible, .button:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .actions {
+    display: flex; flex-wrap: wrap; gap: var(--pitch) 16px;
+    margin: 0 0 var(--pitch);
+  }
+  .button {
+    display: inline-block;
+    height: var(--pitch);
+    padding: 0 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    line-height: calc(var(--pitch) - 2px);
+    border: 1px solid var(--ink);
+    position: relative; top: -1px;
+  }
+  .button.primary { background: var(--ink); color: #fff; }
+  .button.primary:hover { background: #2e2b6e; }
+  .button.secondary { background: var(--paper); color: var(--ink); }
+  .button.secondary:hover { background: #ebeaf4; }
+  .note { color: var(--muted); font-size: 15px; margin: 0 0 var(--pitch); }
+
+  /* the one loud thing: a written sheet laid on the notebook */
+  figure.sample {
+    margin: calc(var(--pitch) * 2) 0 var(--pitch);
+    height: calc(var(--pitch) * 15);
+  }
+  figure.sample img {
+    display: block;
+    width: 100%;
+    height: calc(var(--pitch) * 13);   /* the sheet's own shape, to a rule */
+    object-fit: cover;
+    object-position: top left;
+    transform: rotate(-1.2deg);
+    box-shadow: 0 1px 2px rgba(36, 38, 43, .18), 0 10px 28px rgba(36, 38, 43, .14);
+  }
+  /* a full rule below the tilted sheet, so its corner never touches it */
+  figure.sample figcaption { color: var(--muted); font-size: 15px; margin-top: var(--pitch); }
+
+  ol.steps { list-style: none; padding: 0; margin: 0 0 var(--pitch); counter-reset: step; }
+  ol.steps li {
+    counter-increment: step;
+    padding-left: 44px;
+    margin-bottom: var(--pitch);
+  }
+  ol.steps li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: 0;
+    width: 28px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  ol.steps b { display: block; font-weight: 600; }
+
+  ul.writes { padding-left: 22px; margin: 0 0 var(--pitch); }
+  ul.writes li::marker { color: var(--ink); }
+
+  dl.price { margin: 0 0 var(--pitch); max-width: 30em; }
+  dl.price div { display: flex; justify-content: space-between; gap: 16px; }
+  dl.price dt, dl.price dd { margin: 0; }
+  dl.price dd { font-weight: 600; color: var(--ink); white-space: nowrap; }
+
+  footer {
+    padding: var(--pitch) 0 calc(var(--pitch) * 3);
+    color: var(--muted);
+    font-size: 15px;
+  }
+  footer ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0 22px; }
+  footer li { position: relative; top: -6px; }
+
+  @media (max-width: 560px) {
+    h1 { font-size: 34px; }
+    .lede { font-size: 18px; }
+    figure.sample { height: calc(var(--pitch) * 8); }
+    figure.sample img { height: calc(var(--pitch) * 6); }
+    main, footer { margin-left: calc(var(--margin-x) + 18px); margin-right: 16px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <h1>Type it. Likho writes it in your handwriting.</h1>
+    <p class="lede">Teach Likho your hand once with a single printed sheet. After
+    that, paste any text and get pages back in your own writing, ready as a
+    PDF. It all happens on your laptop.</p>
+    <div class="actions">
+      <a class="button primary" href="https://github.com/Namthenikki/NORA-PUBLIC/releases">Download for Windows</a>
+      <a class="button secondary" href="likho-handwriting-template.pdf">Print the template</a>
+    </div>
+    <p class="note">Windows 10 and 11. The first release is coming soon.</p>
+  </header>
+
+  <figure class="sample">
+    <img src="sample.jpg" width="1080" height="660"
+         alt="A ruled notebook page written by Likho: a question on normalisation, a paragraph answer, a formula for the mean, and two lines of SQL, all in handwriting.">
+    <figcaption>A page written by Likho.</figcaption>
+  </figure>
+
+  <h2>How it works</h2>
+  <ol class="steps">
+    <li><b>Print the template and fill it in</b>
+      Two A4 pages, with each character written three times in the pen you
+      normally use.</li>
+    <li><b>Take a photo of each page</b>
+      Likho reads them in seconds and shows you every letter it learned. Redo
+      any you don't like.</li>
+    <li><b>Paste your text and export</b>
+      Preview as much as you want, then save the pages as a PDF.</li>
+  </ol>
+
+  <h2>What it can write</h2>
+  <ul class="writes">
+    <li>Questions, headings, underlines and lists</li>
+    <li>Maths: fractions, roots, sums, integrals, Greek letters</li>
+    <li>Code, with its line breaks and indentation kept</li>
+    <li>Tables, and simple diagrams like graphs and trees</li>
+    <li>The odd crossed-out word, the way a real hand does</li>
+  </ul>
+
+  <h2>Price</h2>
+  <dl class="price">
+    <div><dt>Learning your handwriting</dt><dd>Free</dd></div>
+    <div><dt>Your first 10 pages</dt><dd>Free</dd></div>
+    <div><dt>Each page after that</dt><dd>₹2</dd></div>
+  </dl>
+  <p>Previews are always free. Pages come in packs of 10, 25, 50 or 100,
+  paid with UPI, card or netbanking.</p>
+
+  <h2>Your handwriting stays with you</h2>
+  <p>Likho learns your hand and writes your pages on your laptop. Your template
+  photos, your letters and your documents are never uploaded. The only thing
+  it checks online is how many pages you have left.
+  <a href="https://github.com/Namthenikki/NORA-PUBLIC/blob/main/docs/privacy.md">Read the privacy note</a>.</p>
+</main>
+
+<footer>
+  <ul>
+    <li><a href="https://github.com/Namthenikki/NORA-PUBLIC/blob/main/docs/user-guide.md">User guide</a></li>
+    <li><a href="https://github.com/Namthenikki/NORA-PUBLIC/blob/main/docs/writing-format.md">Writing format</a></li>
+    <li><a href="https://github.com/Namthenikki/NORA-PUBLIC/blob/main/docs/faq.md">FAQ</a></li>
+    <li><a href="https://github.com/Namthenikki/NORA-PUBLIC/blob/main/docs/privacy.md">Privacy</a></li>
+    <li><a href="https://github.com/Namthenikki/NORA-PUBLIC/blob/main/docs/terms.md">Terms</a></li>
+  </ul>
+</footer>
+</body>
+</html>

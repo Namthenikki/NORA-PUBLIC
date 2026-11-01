@@ -1,6 +1,6 @@
-# NORA
+# Likho
 
-NORA turns typed answers into pages in **your own handwriting**. You teach it
+Likho turns typed answers into pages in **your own handwriting**. You teach it
 your hand once, and after that you paste text and get handwritten pages back,
 as a ready-to-use PDF.
 
@@ -9,10 +9,10 @@ never leave your computer.
 
 ## How it works
 
-1. **Teach NORA your hand.** Print the 2-page template, fill it in with your
-   usual pen, and take photos of it with your phone. NORA reads the photos and
+1. **Teach Likho your hand.** Print the 2-page template, fill it in with your
+   usual pen, and take photos of it with your phone. Likho reads the photos and
    learns your letters. This step is free.
-2. **Check your alphabet.** NORA shows you every letter it learned, and you can
+2. **Check your alphabet.** Likho shows you every letter it learned, and you can
    redo any that came out wrong.
 3. **Write.** Paste or type your text. Headings, code, maths, tables and simple
    diagrams are supported. Preview it, then export the PDF.
@@ -37,9 +37,10 @@ Windows 10/11. The first release is coming soon on the
 
 | Folder | Contents |
 |---|---|
-| `site/` | The NORA website |
+| `site/` | The Likho website |
 | `docs/` | User guide and FAQ |
 | `template/` | The printable handwriting template |
 | `worker/` | The credit service: purchases, free pages and page vouchers |
+| `.github/workflows/` | Publishes `site/` and the template to GitHub Pages |
 
-NORA's engine is not open source. Installers are published here as releases.
+Likho's engine is not open source. Installers are published here as releases.
